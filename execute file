@@ -1,0 +1,13 @@
+if [ "${BRANCH_NAME}" == "2.10" ]; then
+    export JAVA_HOME=${JDK_8}
+    export PATH=$JAVA_HOME/bin:$PATH
+    export M2_HOME=${maven}
+    export PATH=$M2_HOME/bin:$PATH
+	mvn --version
+elif [ "${BRANCH_NAME}" == "2.11" ]; then
+    export JAVA_HOME=${JDK_17}
+    export PATH=$JAVA_HOME/bin:$PATH
+    export M2_HOME=${maven}
+    export PATH=$M2_HOME/bin:$PATH
+    mvn -version
+fi
