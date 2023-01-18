@@ -36,3 +36,24 @@ elif [ "${BRANCH_NAME}" == "2.11" ]; then
     mvn --version
     java --version
 fi
+
+
+
+
+
+#!/bin/bash
+if [ "${BRANCH_NAME}" == "2.10" ]; then
+    export JAVA_HOME=/var/lib/jenkins/tools/hudson.model.JDK/JDK_8/jdk1.8.0_202
+    export M2_HOME=/var/lib/jenkins/tools/hudson.tasks.Maven_MavenInstallation/maven3
+    export PATH=$PATH:$M2_HOME/bin:$JAVA_HOME/bin
+	echo "Branch Name:-${BRANCH_NAME}" 
+	echo "Maven version:- " 
+	mvn clean package
+elif [ "${BRANCH_NAME}" == "2.11" ]; then
+    export JAVA_HOME=/var/lib/jenkins/tools/hudson.model.JDK/JDK_17/jdk-17.0.5
+    export M2_HOME=/var/lib/jenkins/tools/hudson.tasks.Maven_MavenInstallation/maven3
+    export PATH=$PATH:$M2_HOME/bin:$JAVA_HOME/bin
+	echo "Branch Name:-${BRANCH_NAME}" 
+	echo "Maven version:- " 
+	mvn clean package
+fi
