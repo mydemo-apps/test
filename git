@@ -1,4 +1,19 @@
-node {
-   git url: 'https://github.com/mydemo-apps/multi-java-pipe.git', branch: 'master'
-   sh 'git branch -a'
-}
+#!/bin/bash
+if [ "${BRANCH_NAME}" == "R2.9.1" ]; then
+    export JAVA_HOME=/var/lib/jenkins/tools/hudson.model.JDK/JDK_8/jdk1.8.0_202
+    export M2_HOME=/usr/share/maven
+    export PATH=$PATH:$M2_HOME/bin:$JAVA_HOME/bin
+	echo "Branch Name:-${BRANCH_NAME}" 
+	mvn clean package
+	echo $BUILD_USER_NAME
+	mkdir -p /opt/labadmin/Data/AMS-MANAGER-With-Microservices/jmap_1_0_0`date +"%Y_%m_%d_%H-%M"`
+
+elif [ "${BRANCH_NAME}" == "master" ]; then
+    export JAVA_HOME=/var/lib/jenkins/tools/hudson.model.JDK/JDK_17/jdk-17.0.5
+    export M2_HOME=/usr/share/maven
+    export PATH=$PATH:$M2_HOME/bin:$JAVA_HOME/bin
+	echo "Branch Name:-${BRANCH_NAME}" 
+	mvn clean package
+	echo $BUILD_USER_NAME
+	mkdir -p /opt/labadmin/Data/AMS-MANAGER-With-Microservices/jmap_1_0_0`date +"%Y_%m_%d_%H-%M"`
+fi
