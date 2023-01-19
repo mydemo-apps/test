@@ -17,3 +17,4 @@ elif [ "${BRANCH_NAME}" == "master" ]; then
 	echo $BUILD_USER_NAME
 	mkdir -p /opt/labadmin/Data/AMS-MANAGER-With-Microservices/jmap_1_0_0`date +"%Y_%m_%d_%H-%M"`
 fi
+/var/lib/jenkins/tools/hudson.tasks.Maven_MavenInstallation/maven3
