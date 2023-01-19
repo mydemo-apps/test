@@ -1,1 +1,36 @@
 git ls-remote --heads https://github.com/OWNER/REPO.git | grep "FILTER_STRING"
+
+
+Started by user admin
+Running as SYSTEM
+Building in workspace /var/lib/jenkins/workspace/Arandom_github
+using credential kishore-Jan
+Cloning the remote Git repository
+Cloning repository http://172.26.2.79//volt/platform.git
+ > git init /var/lib/jenkins/workspace/Arandom_github # timeout=10
+Fetching upstream changes from http://172.26.2.79//volt/platform.git
+ > git --version # timeout=10
+using GIT_ASKPASS to set credentials kishore-Jan
+ > git fetch --tags --force --progress -- http://172.26.2.79//volt/platform.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url http://172.26.2.79//volt/platform.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url http://172.26.2.79//volt/platform.git # timeout=10
+Fetching upstream changes from http://172.26.2.79//volt/platform.git
+using GIT_ASKPASS to set credentials kishore-Jan
+ > git fetch --tags --force --progress -- http://172.26.2.79//volt/platform.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/master^{commit} # timeout=10
+ > git rev-parse refs/remotes/origin/origin/master^{commit} # timeout=10
+Checking out Revision ba1d0ad56192b6f87ada0e2ca1969e26650a4851 (refs/remotes/origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f ba1d0ad56192b6f87ada0e2ca1969e26650a4851 # timeout=10
+Commit message: "#24325 create third party users at controller during creation/ first time activation"
+First time build. Skipping changelog.
+[Arandom_github] $ /bin/bash /tmp/jenkins646818888864777870.sh
+Branch Name:-2.10
+Maven version:- 
+[1mApache Maven 3.6.3[m
+Maven home: /usr/share/maven
+Java version: 1.8.0_202, vendor: Oracle Corporation, runtime: /var/lib/jenkins/tools/hudson.model.JDK/JDK_8/jdk1.8.0_202/jre
+Default locale: en_US, platform encoding: UTF-8
+OS name: "linux", version: "5.4.0-128-generic", arch: "amd64", family: "unix"
+Finished: SUCCESS
