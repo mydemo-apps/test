@@ -1,1 +1,4 @@
-git ls-remote --heads https://github.com/OWNER/REPO.git | grep "FILTER_STRING"
+node {
+   git url: 'https://github.com/mydemo-apps/multi-java-pipe.git', branch: 'master'
+   sh 'git branch -a'
+}
