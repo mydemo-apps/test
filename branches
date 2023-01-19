@@ -33,6 +33,10 @@ First time build. Skipping changelog.
   remotes/origin/2.1.0
   remotes/origin/2.1.1
   remotes/origin/JMAP-4182
+  
+  
+  echo $BUILD_USER_NAME
+mkdir -p /opt/labadmin/Data/AMS-MANAGER-With-Microservices/jmap_1_0_0`date +"%Y_%m_%d_%H-%M"`
   remotes/origin/R2.10.0_RC3
   remotes/origin/R2.9.0_RC2
   remotes/origin/R2.9.1
