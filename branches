@@ -1,0 +1,71 @@
+Started by user admin
+Running as SYSTEM
+Building in workspace /var/lib/jenkins/workspace/Project Arandom_github
+using credential kishore-Jan
+Cloning the remote Git repository
+Cloning repository http://172.26.2.79//volt/platform.git
+ > git init /var/lib/jenkins/workspace/Project Arandom_github # timeout=10
+Fetching upstream changes from http://172.26.2.79//volt/platform.git
+ > git --version # timeout=10
+using GIT_ASKPASS to set credentials kishore-Jan
+ > git fetch --tags --force --progress -- http://172.26.2.79//volt/platform.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url http://172.26.2.79//volt/platform.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url http://172.26.2.79//volt/platform.git # timeout=10
+Fetching upstream changes from http://172.26.2.79//volt/platform.git
+using GIT_ASKPASS to set credentials kishore-Jan
+ > git fetch --tags --force --progress -- http://172.26.2.79//volt/platform.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/master^{commit} # timeout=10
+ > git rev-parse refs/remotes/origin/origin/master^{commit} # timeout=10
+Checking out Revision ba1d0ad56192b6f87ada0e2ca1969e26650a4851 (refs/remotes/origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f ba1d0ad56192b6f87ada0e2ca1969e26650a4851 # timeout=10
+Commit message: "#24325 create third party users at controller during creation/ first time activation"
+First time build. Skipping changelog.
+[Project Arandom_github] $ /bin/sh -xe /tmp/jenkins8099687491509967439.sh
++ git branch -a
+* (HEAD detached at ba1d0ad)
+  remotes/origin/1.0.0
+  remotes/origin/1.0.0_air_change
+  remotes/origin/13011523_Master
+  remotes/origin/19871-Service-Migration
+  remotes/origin/2.0.0
+  remotes/origin/2.1.0
+  remotes/origin/2.1.1
+  remotes/origin/JMAP-4182
+  remotes/origin/R2.10.0_RC3
+  remotes/origin/R2.9.0_RC2
+  remotes/origin/R2.9.1
+  remotes/origin/R2.9.1_RC4
+  remotes/origin/cli-library-refactoring
+  remotes/origin/dev
+  remotes/origin/feature
+  remotes/origin/infosec
+  remotes/origin/jdk17-upgrade
+  remotes/origin/kafka_authentication
+  remotes/origin/kafka_poc
+  remotes/origin/master
+  remotes/origin/mongoclient_poc
+  remotes/origin/mongodb-ha
+  remotes/origin/mongodb-upgrade
+  remotes/origin/namconv
+  remotes/origin/newFeature
+  remotes/origin/ont-uni-port
+  remotes/origin/platform2.0
+  remotes/origin/poc_to_consume_events_from_external_kafka
+  remotes/origin/revert-959c9daa
+  remotes/origin/scaling
+  remotes/origin/test
+  remotes/origin/topology-features
+  remotes/origin/v3.0.1
+  remotes/origin/v4.0.2
+  remotes/origin/v4.2.5
+  remotes/origin/v4.2.6
+  remotes/origin/v5.0.0
+  remotes/origin/v5.10.4
+  remotes/origin/v5.7.23
+  remotes/origin/v5.8.13
+  remotes/origin/v5.8.23
+  remotes/origin/v5.9.6
+  remotes/origin/v6.01.17
+  remotes/origin/v6.01.25
