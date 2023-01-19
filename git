@@ -1,0 +1,1 @@
+git ls-remote --heads https://github.com/OWNER/REPO.git | grep "FILTER_STRING"
