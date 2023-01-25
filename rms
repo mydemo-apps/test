@@ -19,35 +19,30 @@ Installation of pre-requisites. (nfs-common and apache2). These are required to 
 Copy pre-requisites from the offline package to the RMS repository
 sudo scp 172.27.172.75:/home1/sdpon/SDPON/CBACOfflinePkgs/repo_deps.tgz .
 
-               b. Untar the repo_deps
+b. Untar the repo_deps
+  sudo tar -xvf repo_deps.tgz
 
-sudo tar -xvf repo_deps.tgz
-
-              c.  Install the packages
-
-cd repo_deps
+c.  Install the packages
+  cd repo_deps
 
 sudo dpkg -i *.deb
 
-
-
 3. Mounting the offline repository ( Ex: 172.27.172.75 is offline repository)
 
-           a. Create directory
+a. Create directory
 
 sudo mkdir -p /media/RMS
 
-        b. Mount the offline packages
+b. Mount the offline packages
 
 sudo mount 172.27.172.75:/home1/sdpon/SDPON/CBACOfflinePkgs /media/RMS
-
 
 
 Note: To retain the NFs mount Point after the reboot, Please add below Configuration to the /etc/fstab file.
 
 172.27.172.75:/home1/sdpon/SDPON/CBACOfflinePkgs  /media/RMS nfs defaults 0 0
 
-        c. Create symlink to apache location, to make it available to all nodes in the cluster
+c. Create symlink to apache location, to make it available to all nodes in the cluster
 
 sudo ln -fs /media/RMS/newubuntu18.04/mirror/in.archive.ubuntu.com/ubuntu/ /var/www/html/ubuntu
 
@@ -57,7 +52,7 @@ sudo ln -fs /media/RMS/pip_mirror/ /var/www/html/pip
 
 4. Configuring apt and pip to point to the offline repository
 
-       a.  Create a file (configure.sh) and copy the below content
+a.  Create a file (configure.sh) and copy the below content
 
 sudo vi configure.sh
 
@@ -171,17 +166,14 @@ For IPV6 Setup, Please resolve the dns-name with IPV6 ip in /etc/hosts file and 
 Follow the procedure for setting up the RMS repository from the installation guide.
 
 
-
-
 External MongoDB installation:
+------------------------------
 
 Follow 4.a and 4.b from the “Repo Setup” section to configure apt and pip repositories with repo_ip
 Add apt source for mongodb
 echo "deb [ arch=amd64] http://172.27.170.50/mongo bionic/mongodb-org/4.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.2.list
 
-
-
-    3. Download and install the server key
+3. Download and install the server key
 
 wget http://172.27.170.50/mongo/key/server-4.2.asc
 sudo apt-key add server-4.2.asc
@@ -189,7 +181,7 @@ sudo apt-get install gnupg
 
 sudo apt-get update
 
-   4. Install Mongodb
+4. Install Mongodb
 
 sudo apt-get install -y mongodb-org
 
