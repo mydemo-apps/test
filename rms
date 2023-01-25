@@ -1,14 +1,10 @@
-Skip to end of metadata
-Created by Srujana C P, last modified by Akshay Sharma on Sep 06, 2022Go to start of metadata
-Below procedure is to bring up the RMS cluster without accessing the internet. For this, there is an offline repository, where all ubuntu packages are downloaded. This offline repository gets mounted onto RMS repository. So all the nodes in the cluster uses the RMS repository for offline installation of RMS cluster.
 
-At the end of the document, there is troubleshoot section. Refer to it, in case of any failure.
 
 In the following steps:
 
-172.27.172.75 – Offline repository
+17.14.3.2 – Offline repository
 
-172.27.170.50 – RMS repository
+10.4.2.33 – RMS repository
 
 Repo Setup:
 
@@ -220,6 +216,9 @@ Configure all ceph nodes in the cluster to reach the offline repository for the 
 Follow 4.a and 4.b from the “Repo Setup” section to configure apt and pip repositories with repo_ip
 
 Note: Remaining procedure is same as mentioned in the RMS installation Guide.
+
+
+
 
 
 
