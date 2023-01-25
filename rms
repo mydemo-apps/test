@@ -1,0 +1,285 @@
+Skip to end of metadata
+Created by Srujana C P, last modified by Akshay Sharma on Sep 06, 2022Go to start of metadata
+Below procedure is to bring up the RMS cluster without accessing the internet. For this, there is an offline repository, where all ubuntu packages are downloaded. This offline repository gets mounted onto RMS repository. So all the nodes in the cluster uses the RMS repository for offline installation of RMS cluster.
+
+At the end of the document, there is troubleshoot section. Refer to it, in case of any failure.
+
+In the following steps:
+
+172.27.172.75 – Offline repository
+
+172.27.170.50 – RMS repository
+
+Repo Setup:
+
+Note:
+
+Remove nameservers in /etc/resolv.conf to ensure it is not reaching the internet.
+We support either nfs mount or hard disk mount. For hard-disk mount, you don't require nfs packages.
+
+
+Login to RMS repository VM
+Installation of pre-requisites. (nfs-common and apache2). These are required to mount the offline repository.
+Copy pre-requisites from the offline package to the RMS repository
+sudo scp 172.27.172.75:/home1/sdpon/SDPON/CBACOfflinePkgs/repo_deps.tgz .
+
+               b. Untar the repo_deps
+
+sudo tar -xvf repo_deps.tgz
+
+              c.  Install the packages
+
+cd repo_deps
+
+sudo dpkg -i *.deb
+
+
+
+3. Mounting the offline repository ( Ex: 172.27.172.75 is offline repository)
+
+           a. Create directory
+
+sudo mkdir -p /media/RMS
+
+        b. Mount the offline packages
+
+sudo mount 172.27.172.75:/home1/sdpon/SDPON/CBACOfflinePkgs /media/RMS
+
+
+
+Note: To retain the NFs mount Point after the reboot, Please add below Configuration to the /etc/fstab file.
+
+172.27.172.75:/home1/sdpon/SDPON/CBACOfflinePkgs  /media/RMS nfs defaults 0 0
+
+        c. Create symlink to apache location, to make it available to all nodes in the cluster
+
+sudo ln -fs /media/RMS/newubuntu18.04/mirror/in.archive.ubuntu.com/ubuntu/ /var/www/html/ubuntu
+
+sudo ln -fs /media/RMS/mongo/mirror/repo.mongodb.org/apt/ubuntu /var/www/html/mongo
+
+sudo ln -fs /media/RMS/pip_mirror/ /var/www/html/pip
+
+4. Configuring apt and pip to point to the offline repository
+
+       a.  Create a file (configure.sh) and copy the below content
+
+sudo vi configure.sh
+
+#!/bin/bash
+
+#REPO IP
+
+REPO_IP=
+
+#NUMBER OF ARGUMENTS PASSED
+
+ARG_COUNT="1"
+
+usage()
+
+{
+
+        echo "usage:
+
+     Execute command : sudo ./script.sh <REPO_IP>"
+
+     exit 1
+
+}
+
+configure_pip() {
+
+echo "Executing configure_pip"
+
+FILE="$HOME/.pip"
+
+mkdir -p ${FILE}
+
+echo "[install]" > ${FILE}/pip.conf
+
+echo "index-url = http://${REPO_IP}/pip/" >> ${FILE}/pip.conf
+
+echo "trusted-host = ${REPO_IP}" >> ${FILE}/pip.conf
+
+}
+
+configure_apt() {
+
+if [ -f /etc/apt/sources_original ]
+
+then
+
+        sudo cp /etc/apt/sources_original /etc/apt/sources.list
+
+else
+
+        sudo cp /etc/apt/sources.list /etc/apt/sources_original
+
+fi
+
+echo "Executing configure_apt"
+
+sed -i "s#archive.ubuntu.com#${REPO_IP}#g" /etc/apt/sources.list
+
+}
+
+main()
+
+{
+
+if [[ $# -lt ${ARG_COUNT} ]]
+
+then
+
+   echo "ERROR: Missing mandatory argument REPO IP . Please check with --help option"
+
+   exit 1
+
+fi
+
+if [[ "$*" == *--help* ]]
+
+then
+
+   usage
+
+fi
+
+REPO_IP=$1
+
+configure_pip
+
+configure_apt
+
+sudo apt-get update
+
+sudo apt-get install sshpass
+
+sudo apt-get install python3-pip
+
+}
+
+main "$@"
+
+
+
+     b. Run the shell script
+
+sudo bash configure.sh <REPO_IP>
+
+Ex: sudo bash configure.sh 172.27.170.50
+
+Note:
+
+For IPV6 Setup, Please resolve the dns-name with IPV6 ip in /etc/hosts file and provide the dns-name as an input in configure.sh script. for ex: sudo bash configure.sh offline-repo
+Follow the procedure for setting up the RMS repository from the installation guide.
+
+
+
+
+External MongoDB installation:
+
+Follow 4.a and 4.b from the “Repo Setup” section to configure apt and pip repositories with repo_ip
+Add apt source for mongodb
+echo "deb [ arch=amd64] http://172.27.170.50/mongo bionic/mongodb-org/4.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.2.list
+
+
+
+    3. Download and install the server key
+
+wget http://172.27.170.50/mongo/key/server-4.2.asc
+sudo apt-key add server-4.2.asc
+sudo apt-get install gnupg
+
+sudo apt-get update
+
+   4. Install Mongodb
+
+sudo apt-get install -y mongodb-org
+
+
+
+Note: Remaining procedure is same as earlier from step 5: in the RMS installation Guide (Continue from Chapter 5, Mongodb Installation, step 5)
+
+ 
+
+RMS Nodes:
+
+in order to configure all the nodes in the cluster to reach the offline repository for the installation.  Follow 4.a and 4.b from the “Repo Setup” section to configure apt and pip repositories with repo_ip, before installing the Kubernetes,
+
+Note: Remove nameserver entry in /etc/resolv.conf , as internet  connection is not required.
+
+Note: Remaining Procedure is same as mentioned in the RMS installation guide.
+
+
+
+Ceph Cluster:
+
+Configure all ceph nodes in the cluster to reach the offline repository for the installation.
+
+Follow 4.a and 4.b from the “Repo Setup” section to configure apt and pip repositories with repo_ip
+
+Note: Remaining procedure is same as mentioned in the RMS installation Guide.
+
+
+
+Troubleshooting:
+
+Error: If below error occurs at any point of time while running apt commands.
+
+Traceback (most recent call last):
+
+  File "/usr/lib/cnf-update-db", line 8, in <module>
+
+    from CommandNotFound.db.creator import DbCreator
+
+  File "/usr/lib/python3/dist-packages/CommandNotFound/db/creator.py", line 11, in <module>
+
+    import apt_pkg
+
+ModuleNotFoundError: No module named 'apt_pkg'
+
+Reading package lists... Done
+
+E: Problem executing scripts APT::Update::Post-Invoke-Success 'if /usr/bin/test -w /var/lib/command-not-found/ -a -e /usr/lib/cnf-update-db; then /usr/lib/cnf-update-db > /dev/null; fi'
+
+E: Sub-process returned an error code
+
+Solution:
+
+cd /usr/lib/python3/dist-packages/
+
+sudo ln -s apt_pkg.cpython-36m-x86_64-linux-gnu.so apt_pkg.so
+
+HDD Mount
+
+Note: Below steps are valid for baremetal.
+
+Step 1:  Please Plug in HDD to the baremetal server. 
+
+step 2:  Once you plug in the HDD, Please login to the baremetal and perform below commands.
+
+sudo apt install exfat-fuse exfat-utils
+sudo mount -t exfat /dev/sdb1 /mnt   (Please use lsblk -a or fdisk to check the new disk information, Here in this example, it is /dev/sdb1)
+Once step 2 is performed, you will see the data/offlinepackages in /mnt path of the machine. After this, Please follow Step Repo setup section. In Repo setup, In place of 172.27.172.75:/path , Please use the baremetal IP:/mnt Path as a nfs mount path.
+
+
+
+Note: We support either nfs mount or hardisk mount. 
+
+How to do NFS mount configuration in NFS server?
+
+Once the HDD is plugged into the bare-metal, NFS needs to be installed in baremetal using the below commands.
+sudo apt install nfs-kernel-server
+sudo vim /etc/exports, add this line to the end of the file  "/mnt/offlinepkgs/     *(ro,sync,no_subtree_check,insecure)", Where /mnt/offlinepkgs is the path of the disk path + offlinepkgs directory.
+sudo exportfs -a
+sudo systemctl restart nfs-kernel-server  
+LikeDaniel Raj Nelaturi likes this
+No labelsEdit Labels
+1 Comment
+User icon: dnelatur
+Daniel Raj Nelaturi
+Team my 2 cents
+1. It would be better to use hostnames rather than hardcoded IP's.
+
+2. If nfs client/server is hung at times it can lead to machine becoming irresponsive. Its better to avoid nfs mount.
